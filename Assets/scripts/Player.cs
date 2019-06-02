@@ -5,23 +5,28 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour {
 
+    [Header("General")]
     [SerializeField] float xSpeed = 4f;
     [SerializeField] float ySpeed = 4f;
     [SerializeField] float xConstraint = 6f;
     [SerializeField] float yConstraint = 6f;
+
+    [Header("Pitch")]
     [SerializeField] float positionPitchFactor = -5f;
     [SerializeField] float controlPitchFactor = -30f;
     [SerializeField] float positionYawFactor = 4.5f;
     [SerializeField] float controlRollFactor = -20f;
+
     float xOffsetValue;
     float yOffsetValue;
     float xThrow;
     float yThrow;
+    private bool processMovement;
 
     // Use this for initialization
     void Start () {
-
-	}
+        this.processMovement = true;
+    }
 
     void processTranslation()
     {
@@ -50,10 +55,18 @@ public class Player : MonoBehaviour {
         float roll = this.xThrow * controlRollFactor;
         transform.localRotation = Quaternion.Euler(pitch, yaw, roll);
     }
+
+    void stopInput()
+    {
+        this.processMovement = false;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        this.processTranslation();
-        this.processRotation();
+        if (this.processMovement)
+        {
+            this.processTranslation();
+            this.processRotation();
+        }
     }
 }
